@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:image_demo/utils/globle.dart';
 
 class User {
   String email;
@@ -23,14 +24,26 @@ class User {
   }
 }
 
-Future<User> loginUser(String url, String body) async {
+Future<bool> loginCheck(User user1) async {
   Map<String, String> headers = {};
   headers['Content-Type'] = "application/json";
-//  headers['Authorization'] = token;
-  var response = await post(url, body: body, headers: headers);
-  String res = response.body;
-  print(res);
-  Map<String, dynamic> map = json.decode(res);
-  User user = User.fromJson(map);
-  return user;
+  var response = await post(URL_LOGIN,
+      body: json.encode(user1.toJson()), headers: headers);
+  Map<String, dynamic> map = json.decode(response.body);
+  Result result = Result.fromJson(map);
+  if (result != null) {
+    TOKEN = result.token;
+    return true;
+  } else
+    return false;
+}
+
+class Result {
+  String token;
+
+  Result({this.token});
+
+  factory Result.fromJson(Map<String, dynamic> json) {
+    return Result(token: json['token']);
+  }
 }

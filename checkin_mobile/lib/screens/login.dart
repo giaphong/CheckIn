@@ -253,11 +253,10 @@ class _LoginPageState extends State<LoginPage> {
   login() {
     String email = _emailController.text;
     String password = _passwordController.text;
-
     if (email.trim() != null && password.trim().length > 1) {
-      User user = new User(email: email, password: password);
-      loginUser(URL_LOGIN, json.encode(user.toJson())).then((user) {
-        if (user.name != null) {
+      User user = new User(email: email, password: password, name: 'Person');
+      loginCheck(user).then((value) {
+        if (value) {
           userGlobal = user;
           Navigator.push(
             context,

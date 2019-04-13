@@ -42,11 +42,8 @@ Future<String> upload(_image, compress, apiKey, apiSecret, BASE_URL) async {
 
   Map<String, String> headers = {};
   headers['Content-Type'] = "application/json";
-  headers['Authorization'] = '123456';
-
+  headers['Authorization'] = 'ddae9b93be2640b6acb788fe6384862c';
   var response = await post(BASE_URL, headers: headers, body: requestBody);
-
-  print(response.body);
   Map<String, dynamic> map = json.decode(response.body);
   Photo photo = Photo.fromJson(map);
 

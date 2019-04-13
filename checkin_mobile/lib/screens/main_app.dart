@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_demo/components/flushbar.dart';
+import 'package:image_demo/components/loading.dart';
 import 'package:image_demo/model/checkin.dart';
 import 'package:image_demo/model/photo.dart';
 import 'package:image_demo/screens/about.dart';
@@ -173,101 +175,132 @@ class MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            new GestureDetector(
-              child: new Container(
-                height: MediaQuery.of(context).size.height / 2,
-                width: MediaQuery.of(context).size.width,
-                child: _image == null
-                    ? new Stack(
-                        children: <Widget>[
-                          new Center(
-                            child: new CircleAvatar(
-                              radius: 80.0,
-                              backgroundColor: const Color(0xFF778899),
-                            ),
-                          ),
-                          new Center(
-                            child: new Image.asset(
-                              "assets/camera.png",
-                            ),
-                          ),
-                        ],
-                      )
-                    : new Container(
-                        child: Image.asset(_image.path),
-                      ),
-              ),
-              onTap: () {
-                getImage();
-              },
-            ),
-            new Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-              alignment: Alignment.center,
-              child: new Row(
+        body: opacity == 0
+            ? LoadingBuilder(
+                text: 'Đang gửi dữ liệu...',
+              )
+            : Column(
                 children: <Widget>[
-                  new Expanded(
-                      child: Opacity(
-                    child: new FlatButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
-                      color: Colors.redAccent,
-                      onPressed: () {
-                        setState(() {
-                          opacity = 0.0;
-                        });
-                        if (_image != null) {
-                          if (currentLocation.longitude != null) {
-                            print(currentLocation.latitude);
-                            print(currentLocation.longitude);
-                            upload(_image, true, API_KEY, API_SECRET, BASE_URL)
-                                .then((value) {
-                              print('Nguyen Gia Phong:' + value);
-                              CheckIn checkin = new CheckIn();
+                  new GestureDetector(
+                    child: new Container(
+                      padding: EdgeInsets.all(20.0),
+                      height: MediaQuery.of(context).size.height * 3 / 5,
+                      width: MediaQuery.of(context).size.width,
+                      child: _image == null
+                          ? new Stack(
+                              children: <Widget>[
+                                new Center(
+                                  child: new CircleAvatar(
+                                    radius: 80.0,
+                                    backgroundColor: const Color(0xFF778899),
+                                  ),
+                                ),
+                                new Center(
+                                  child: new Image.asset(
+                                    "assets/camera.png",
+                                  ),
+                                ),
+                              ],
+                            )
+                          : new Container(
+                              child: Image.asset(_image.path),
+                            ),
+                    ),
+                    onTap: () {
+                      getImage();
+                    },
+                  ),
+                  new Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(
+                        left: 30.0, right: 30.0, top: 20.0),
+                    alignment: Alignment.center,
+                    child: new Row(
+                      children: <Widget>[
+                        new Expanded(
+                            child: Opacity(
+                          child: new FlatButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            color: Colors.redAccent,
+                            onPressed: () {
                               setState(() {
-                                opacity = 1.0;
+                                opacity = 0.0;
                               });
-                            });
-                          }
-                        } else {
-                          showToast(
-                              "Bạn chưa chọn ảnh",
-                              "Vui lòng chụp ảnh trước đã.",
-                              Icons.account_circle,
-                              3);
-                        }
-                      },
-                      child: new Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20.0,
-                          horizontal: 20.0,
-                        ),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            new Expanded(
-                              child: Text(
-                                "Check In",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                              if (_image != null) {
+                                if (currentLocation.longitude != null) {
+                                  upload(_image, true, API_KEY, API_SECRET,
+                                          BASE_URL)
+                                      .then((value) {
+                                    CheckIn checkin = new CheckIn(
+                                        token: TOKEN,
+                                        datetime: new DateTime.now()
+                                            .toIso8601String(),
+                                        lat: currentLocation.latitude,
+                                        lng: currentLocation.longitude,
+                                        urlImage: value);
+
+                                    checkIn(checkin).then((value) {
+                                      if (value != null) {
+                                        print(value);
+                                        showToast(
+                                            "Checkin Thành công",
+                                            "Cảm ơn bạn nhá",
+                                            Icons.account_circle,
+                                            3);
+                                      } else {
+                                        showToast(
+                                            "Checkin Thất bại",
+                                            "Vui lòng thử lại",
+                                            Icons.account_circle,
+                                            3);
+                                      }
+                                    });
+
+                                    setState(() {
+                                      opacity = 1.0;
+                                    });
+                                  });
+                                }
+                              } else {
+                                showToast(
+                                    "Bạn chưa chọn ảnh",
+                                    "Vui lòng chụp ảnh trước đã.",
+                                    Icons.account_circle,
+                                    3);
+                                setState(() {
+                                  opacity = 1.0;
+                                });
+                              }
+                            },
+                            child: new Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20.0,
+                                horizontal: 20.0,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  new Expanded(
+                                    child: Text(
+                                      "Check In",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                          opacity: opacity,
+                        )),
+                      ],
                     ),
-                    opacity: opacity,
-                  )),
+                  ),
                 ],
-              ),
-            ),
-          ],
-        ));
+              ));
   }
 }

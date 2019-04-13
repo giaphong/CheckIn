@@ -1,0 +1,234 @@
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+      <div class="oe_span12">
+         <h2 class="oe_slogan">Features</h2>
+      </div>
+      <div class="oe_span12">
+         This module provide REST API (json) access to Odoo models.
+         <ul>
+         <li>
+            Available Operations
+            <ul>
+         <li>
+            <p><b>Get Token :</b></p>
+            <p>
+               Odoo requires users of the API to be authenticated before they can use any other API.
+               Authentication itself is done through the authenticate function and returns Token.
+               On Every API call user must send a token to Access any API.
+               <br/>
+            <ul>
+               <li>
+                  <b>Example:</b><br/>
+                  <pre>localhost:8069/api/user/get_token?login=admin&password=admin</pre>
+                  <b>It will Return:</b>
+                  <pre>{"token": "24e635ff9cc74429bed3d420243f5aa6"}   # If authentication done.</pre>
+               </li>
+            </ul>
+            </p>
+         </li>
+         <li>
+            <p><b>Delete Token :</b></p>
+            <p>
+               User can delete token so, API call is not allow to access by that token
+               On Detele token API call user must send a token.<br/>
+            <ul>
+               <li>
+                  <b>Example:</b><br/>
+                  <pre>
+localhost:8069/api/user/delete_token?token=24e635ff9cc74429bed3d420243f5aa6</pre>
+                  <b>Return:</b><br/>
+                  <pre>{"success": "Token '24e635ff9cc74429bed3d420243f5aa6' Deleted Successfully"}</pre>
+                  <br/>
+               </li>
+            </ul>
+            </p>
+         </li>
+         <li>
+            <p><b>Refresh Token :</b></p>
+            <p>
+               User can Refresh token so, token will be updated and return new token.
+               On Refresh token API call user must send a token.<br/>
+            <ul>
+               <li>
+                  <b>Example:</b><br/>
+                  <pre>localhost:8069/api/user/refresh_token?token=24e635ff9cc74429bed3d420243f5aa6</pre>
+                  <b>Return:</b><br/>
+                  <pre>{"token": "cd7bdf0dfb7d4d74b08d3eae84af934c"}</pre>
+                  <br/>
+                  </p>
+               </li>
+               </ul>
+               <li>
+                  <p><b>Search Record:</b></p>
+                  <p>
+                     list records , it is medetory to pass model name
+                     if id is pass with url then return a single record of a specific id Found
+                     else check domain in post data , if domain is found then return matched records
+                     else return all the data with id and name field.<br/><br/>
+                     By default a search will return the ids and name of all records matching the
+                     condition, which may be a huge number.if offset and limit parameters
+                     are available to only retrieve a subset of all matched records.<br/><br/>
+                     By default a search will return the ids and name of all records matching the condition,
+                     it may possible that also you want to read other fields name with than name and ids.
+                     Note: it will always returns id as default field name if field name
+                     is not given it will return (id and name) otherwise it will return (id and all given fields name).<br/><br/>
+                  <ul>
+                     <li>
+                        <b>Example for single record :</b>
+                        <pre>localhost:8069/api/res.partner/search/1?token=24e635ff9cc74429bed3d420243f5aa6<br/></pre>
+                     </li>
+                     <li>
+                        <b>Example for search using domain, offset and limit</b>
+                        <pre>localhost:8069/api/res.partner/search?token=cd7bdf0dfb7d4d74b08d3eae84af934c&
+		&domain=[('customer','=', True)]&offset=10&limit=2&fields=['name','phone']</pre>
+                        <br/>
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>
+[
+    {
+        "phone": "+44 121 690 4596",
+        "id": 25,
+        "name": "David Simpson"
+    },
+    {
+        "phone": false,
+        "id": 35,
+        "name": "Jacob Taylor"
+    },
+]
+					            
+                           </li>
+                        </ul>
+                        </pre>
+                     </li></ul>
+                     <li>
+                  <p><b>Create Record:</b></p>
+                  <p>
+                    create record , it is medetory to pass model name
+            		and values for record creation pass as create_vals of JOSN/Dictionary format. .</p>
+                  <ul>
+                     <li>
+                        <b>Example:</b>
+                        <pre>localhost:8069/api/product.product/create?token=24e635ff9cc74429bed3d420243f5aa6&
+                        	create_vals={'name':'Apple'}<br/></pre>
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{'id':101}
+                              </pre>
+                            </li>
+                        </ul>
+                     </li>
+                  </ul>
+               </li>
+
+               <li>
+                  <p><b>Update Record:</b></p>
+                  <p>
+                    update record , it is medetory to pass model name and record id
+            and values for record update pass as update_vals in JOSN/Dictionary format. </p>
+                  <ul>
+                     <li>
+                        <b>Example:</b>
+                        <pre>localhost:8069/api/product.product/update/101?token=24e635ff9cc74429bed3d420243f5aa6&
+	update_vals={'name':'Mango'}<br/></pre>
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{'success':'Record Updated Successfully'}
+                              </pre>
+                            </li>
+                        </ul>
+                     </li>
+                  </ul>
+               </li>
+
+               <li>
+                  <p><b>Delete Record:</b></p>
+                  <p>
+                    Delete record , it is medetory to pass model name and record id 
+            For Delete multiple records pass record ids in url parameter as 'unlink_ids' as in list format. </p>
+                  <ul>
+                     <li>
+                        <b>Example for single record:</b>
+                        <pre>localhost:8069/api/product.product/unlink/59?token=24e635ff9cc74429bed3d420243f5aa6<br/></pre>
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{'success':'Records Successfully Deleted 59'}
+                              </pre>
+                            </li>
+                        </ul>
+                     </li>
+                     <li>
+                        <b>Example for multi record:</b>
+                        <pre>localhost:8069/api/product.product/unlink/?token=24e635ff9cc74429bed3d420243f5aa6&
+	unlink_ids=[60,61]
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{'success':'Records Successfully Deleted [60,61]'}
+                              </pre>
+                            </li>
+                        </ul>
+                     </li>
+                  </ul>
+               </li>
+
+               <li>
+                  <p><b>Calling method of any model :</b></p>
+                  <p>
+                    For calling a method of any model , it is medetory to pass model name, record id and method name
+            method call based on new api standards. 
+            so no need to pass cr,uid,ids,context as method argument. Other then this argument pass as 'args'=[arg1,arg2] in query string
+                  <ul>
+                     <li>
+                        <b>Example for calling a method without argument:</b>
+                        <pre>localhost:8069/api/sale.order/26/method/action_button_confirm/
+	?token=1ec448c54a004165b4c0da976b227260<br/></pre>
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{"success": "True"}</pre>
+<p>It will return dictionary its key 'success' and  and its value is as per return value of calling method
+                              </p>
+                            </li>
+                        </ul>
+                     </li>
+                     <li>
+                        <b>Example for calling method with arguments:</b>
+                        <p>def get_salenote(self, partner_id)' 
+this method is of sale.order model. For calling this method we need to pass partner_id as argument</p>
+                <pre>localhost:8069/api/sale.order/35/method/get_salenote/
+	?token=1ec448c54a004165b4c0da976b227260&args=[3]
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{"success": "sale note"}
+                              </pre>
+                            </li>
+                        </ul>
+                     </li>
+
+                     <li>
+                        <b>Example for calling method with keyword arguments:</b>
+                <pre>localhost:8069/api/sale.order/33/method/action_invoice_create/?
+	token=1ec448c54a004165b4c0da976b227260&args={'date_invoice':'2016-09-02'}
+                        <ul style="list-style-type: none;">
+                           <li>
+                              <b> It will Return : </b>
+                              <pre>{"success": "12"}
+                              </pre>
+                            </li>
+                        </ul>
+                     </li>
+
+                  </ul>
+               </li>
+
+            </ul>
+      </div>
+   </div>
+</section>

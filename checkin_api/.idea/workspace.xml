@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98ab6e09-4a28-4486-bea7-602a9c589789" name="Default Changelist" comment="" />
+    <list default="true" id="8c0a7868-1e5e-4243-9113-386127cec769" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../checkin_mobile/lib/model/checkin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../checkin_mobile/lib/model/checkin.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../checkin_mobile/lib/model/user.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../checkin_mobile/lib/model/user.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../checkin_mobile/lib/screens/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../checkin_mobile/lib/screens/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../checkin_mobile/lib/utils/globle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../checkin_mobile/lib/utils/globle.dart" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="60">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -24,6 +29,9 @@
       </file>
     </leaf>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -31,12 +39,20 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="67" />
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="39" />
     <option name="y" value="25" />
-    <option name="width" value="767" />
+    <option name="width" value="781" />
     <option name="height" value="875" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -47,8 +63,8 @@
         <subPane>
           <expand>
             <path>
-              <item name="checkin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="checkin" type="462c0819:PsiDirectoryNode" />
+              <item name="checkin_api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="checkin_api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -57,7 +73,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../report_mrs" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -76,20 +92,19 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="98ab6e09-4a28-4486-bea7-602a9c589789" name="Default Changelist" comment="" />
-      <created>1554433426361</created>
+      <changelist id="8c0a7868-1e5e-4243-9113-386127cec769" name="Default Changelist" comment="" />
+      <created>1555044133687</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1554433426361</updated>
+      <updated>1555044133687</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="767" height="875" extended-state="4" />
-    <editor active="true" />
+    <frame x="39" y="25" width="1561" height="875" extended-state="6" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2392473" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12093628" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
@@ -110,8 +125,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>

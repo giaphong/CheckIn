@@ -1,4 +1,4 @@
-#!/home/giaphong/projects/api/checkin/venv/bin/python3
+#!/home/giaphong/Gits/checkin/checkin_api/venv/bin/python3
 
 # -*- coding: utf-8 -*-
 import re

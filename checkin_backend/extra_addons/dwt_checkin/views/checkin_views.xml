@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<odoo>
+    <data>
+        <record id="checkin_submenu_act" model = "ir.actions.act_window">
+            <field name ="name">Mobile CheckIn</field>
+            <field name ="type">ir.actions.act_window</field>
+            <field name="res_model">mobile.checkin</field>
+            <field name ="view_model">tree, form</field>
+        </record>
+
+        <record id="checkin_view_filter" model="ir.ui.view">
+            <field name="name">checkin.view_filter</field>
+            <field name="model">mobile.checkin</field>
+            <field name="arch" type="xml">
+                <search string="CheckIn">
+                    <field name="name"/>
+                    <field name="timestamp"/>
+                    <field name="lat"/>
+                    <field name="lng"/>
+                    <field name="photo"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="checkin_view_tree" model="ir.ui.view">
+            <field name="name">checkin.view_tree</field>
+            <field name="model">mobile.checkin</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Checkin">
+                    <field name="name"/>
+                    <field name="timestamp"/>
+                    <field name="lat"/>
+                    <field name="lng"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="checkin_view_form" model="ir.ui.view">
+            <field name="name">checkin.view_form</field>
+            <field name="model">mobile.checkin</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="CheckIn">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="timestamp"/>
+                                <field name="user_id"/>
+                            </group>
+                            <group>
+                                <field name="lat"/>
+                                <field name="lng"/>
+                                <field name="photo"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
