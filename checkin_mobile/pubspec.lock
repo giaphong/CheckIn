@@ -64,16 +64,39 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  dart_config:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: a7ed88a4793e094a4d5d5c2d88a89e55510accde
+      url: "https://github.com/MarkOSullivan94/dart_config.git"
+    source: git
+    version: "0.5.0"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_launcher_icons:
+    dependency: "direct main"
+    description:
+      name: flutter_launcher_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  function_types:
+    dependency: transitive
+    description:
+      name: function_types
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   http:
     dependency: "direct main"
     description:
@@ -102,6 +125,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0+9"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.8"
   location:
     dependency: "direct main"
     description:
@@ -123,6 +153,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  package_info:
+    dependency: "direct main"
+    description:
+      name: package_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+3"
   path:
     dependency: transitive
     description:
@@ -144,6 +181,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  queries:
+    dependency: "direct main"
+    description:
+      name: queries
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.12"
   quiver:
     dependency: transitive
     description:
@@ -198,6 +242,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.2"
+  timeline_list:
+    dependency: "direct main"
+    description:
+      name: timeline_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   typed_data:
     dependency: transitive
     description:
@@ -219,6 +270,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.1"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.15"
 sdks:
   dart: ">=2.1.0 <3.0.0"
   flutter: ">=0.1.4 <2.0.0"

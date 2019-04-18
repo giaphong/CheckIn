@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_demo/components/flushbar.dart';
 import 'package:image_demo/components/loading.dart';
 import 'package:image_demo/model/checkin.dart';
 import 'package:image_demo/model/photo.dart';
-import 'package:image_demo/screens/about.dart';
-import 'package:image_demo/screens/support.dart';
+import 'package:image_demo/screens/list_checkin.dart';
+import 'package:image_demo/screens/login.dart';
+import 'package:image_demo/theme/styles.dart';
 import 'package:image_demo/utils/globle.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
@@ -29,11 +29,13 @@ class MyHomePageState extends State<MyHomePage> {
   double opacity = 1.0;
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxWidth: 480.0, maxHeight: 480.0);
 
     setState(() {
       _image = image;
     });
+    checkInServer();
   }
 
   initPlatformState() async {
@@ -81,7 +83,7 @@ class MyHomePageState extends State<MyHomePage> {
         duration: Duration(seconds: seconds),
         icon: Icon(
           icon,
-          color: Colors.redAccent,
+          color: primaryColor,
           size: 30.0,
         ),
         mainButton: FlatButton(
@@ -91,7 +93,7 @@ class MyHomePageState extends State<MyHomePage> {
           child: Text(
             "Ẩn",
             style: TextStyle(
-                color: Colors.redAccent,
+                color: primaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0),
           ),
@@ -99,13 +101,11 @@ class MyHomePageState extends State<MyHomePage> {
         titleText: Text(
           title,
           style: TextStyle(
-              color: Colors.redAccent,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold),
+              color: primaryColor, fontSize: 20.0, fontWeight: FontWeight.bold),
         ),
         messageText: Text(
           content,
-          style: TextStyle(color: Colors.redAccent, fontSize: 15.0),
+          style: TextStyle(color: primaryColor, fontSize: 15.0),
         ),
       )..show(context),
     );
@@ -121,8 +121,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
-          backgroundColor: Colors.redAccent,
+          title: Text('Giao diện checkin'),
           centerTitle: true,
         ),
         drawer: SafeArea(
@@ -130,18 +129,13 @@ class MyHomePageState extends State<MyHomePage> {
             child: Column(
               children: <Widget>[
                 new UserAccountsDrawerHeader(
-                  accountName: new Text(userGlobal.name,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0)),
-                  decoration: BoxDecoration(color: Colors.redAccent),
+                  decoration: BoxDecoration(color: primaryColor),
                   accountEmail: new Text(
                     userGlobal.email,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 15.0),
+                        fontSize: 20.0),
                   ),
                   currentAccountPicture: new Container(
                       width: 48.0,
@@ -154,23 +148,36 @@ class MyHomePageState extends State<MyHomePage> {
                   onDetailsPressed: () {},
                 ),
                 new ListTile(
-                    title: new Text("About"),
+                    title: new Text(
+                      "Danh sách checkin",
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold),
+                    ),
                     trailing: new Icon(Icons.arrow_right),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (BuildContext context) => new About()));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => LoadScreenListCheckIn()),
+                      );
                     }),
-                new Divider(),
+                Spacer(),
                 new ListTile(
-                    title: new Text("Support"),
+                    title: new Text(
+                      "Thoát ứng dụng",
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold),
+                    ),
                     trailing: new Icon(Icons.arrow_right),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (BuildContext context) => new Support()));
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          ModalRoute.withName("/"));
                     }),
-                new Divider(),
               ],
             ),
           ),
@@ -178,6 +185,7 @@ class MyHomePageState extends State<MyHomePage> {
         body: opacity == 0
             ? LoadingBuilder(
                 text: 'Đang gửi dữ liệu...',
+                color: primaryColor,
               )
             : Column(
                 children: <Widget>[
@@ -210,97 +218,79 @@ class MyHomePageState extends State<MyHomePage> {
                       getImage();
                     },
                   ),
-                  new Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.only(
-                        left: 30.0, right: 30.0, top: 20.0),
-                    alignment: Alignment.center,
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                            child: Opacity(
-                          child: new FlatButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                            color: Colors.redAccent,
-                            onPressed: () {
-                              setState(() {
-                                opacity = 0.0;
-                              });
-                              if (_image != null) {
-                                if (currentLocation.longitude != null) {
-                                  upload(_image, true, API_KEY, API_SECRET,
-                                          BASE_URL)
-                                      .then((value) {
-                                    CheckIn checkin = new CheckIn(
-                                        token: TOKEN,
-                                        datetime: new DateTime.now()
-                                            .toIso8601String(),
-                                        lat: currentLocation.latitude,
-                                        lng: currentLocation.longitude,
-                                        urlImage: value);
 
-                                    checkIn(checkin).then((value) {
-                                      if (value != null) {
-                                        print(value);
-                                        showToast(
-                                            "Checkin Thành công",
-                                            "Cảm ơn bạn nhá",
-                                            Icons.account_circle,
-                                            3);
-                                      } else {
-                                        showToast(
-                                            "Checkin Thất bại",
-                                            "Vui lòng thử lại",
-                                            Icons.account_circle,
-                                            3);
-                                      }
-                                    });
-
-                                    setState(() {
-                                      opacity = 1.0;
-                                    });
-                                  });
-                                }
-                              } else {
-                                showToast(
-                                    "Bạn chưa chọn ảnh",
-                                    "Vui lòng chụp ảnh trước đã.",
-                                    Icons.account_circle,
-                                    3);
-                                setState(() {
-                                  opacity = 1.0;
-                                });
-                              }
-                            },
-                            child: new Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 20.0,
-                                horizontal: 20.0,
-                              ),
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  new Expanded(
-                                    child: Text(
-                                      "Check In",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          opacity: opacity,
-                        )),
-                      ],
-                    ),
-                  ),
+//                  new Container(
+//                    width: MediaQuery.of(context).size.width,
+//                    height: 50,
+//                    margin: EdgeInsets.all(20.0),
+//                    child: new FlatButton(
+//                      child: Text(
+//                        "Báo cáo sự cố",
+//                        textAlign: TextAlign.center,
+//                        style: TextStyle(
+//                            color: Colors.white, fontWeight: FontWeight.bold),
+//                      ),
+//                      shape: new RoundedRectangleBorder(
+//                        borderRadius: new BorderRadius.circular(30.0),
+//                      ),
+//                      color: primaryColor,
+//                      onPressed: () {
+////                        checkInServer();
+//                      },
+//                    ),
+//                  ),
                 ],
               ));
+  }
+
+  void checkInServer() {
+    setState(() {
+      opacity = 0.0;
+    });
+    if (_image != null) {
+      if (currentLocation.longitude != null) {
+        upload(_image, true, API_KEY, API_SECRET, BASE_URL).then((value) {
+          print(new DateTime.now().toString());
+          if (value != '') {
+            CheckIn checkin = new CheckIn(
+                datetime: new DateTime.now().toString(),
+                lat: currentLocation.latitude,
+                lng: currentLocation.longitude,
+                urlImage: value);
+
+            checkIn(checkin).then((value) {
+              if (value) {
+                showToast("Checkin Thành công", "Cảm ơn bạn nhá",
+                    Icons.account_circle, 3);
+              } else {
+                showToast("Checkin Thất bại", "Vui lòng thử lại",
+                    Icons.account_circle, 3);
+              }
+            });
+          } else {
+            showToast("Checkin Thất bại", "Vui lòng thử lại",
+                Icons.account_circle, 3);
+          }
+          setState(() {
+            opacity = 1.0;
+            _image = null;
+          });
+        });
+      } else {
+        showToast("Bạn chưa bật vị trí", "Vui lòng mở vị trí của bạn ",
+            Icons.account_circle, 3);
+        setState(() {
+          opacity = 1.0;
+          _image = null;
+        });
+      }
+    } else {
+      showToast("Bạn chưa chọn ảnh", "Vui lòng chụp ảnh trước đã.",
+          Icons.account_circle, 3);
+      setState(() {
+        opacity = 1.0;
+        _image = null;
+      });
+    }
   }
 }

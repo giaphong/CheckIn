@@ -11,8 +11,10 @@
     'website': 'https://dnpcorp.vn',
     'depends': ['base'],
     'data': [
+        'security/checkin_security.xml',
+        'security/ir.model.access.csv',
+        'security/ir_rule.xml',
         'views/checkin_views.xml',
-        'views/user_checkin_views.xml',
         'views/menu.xml'
     ],
     'css': [],

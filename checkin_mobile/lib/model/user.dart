@@ -27,15 +27,21 @@ class User {
 Future<bool> loginCheck(User user1) async {
   Map<String, String> headers = {};
   headers['Content-Type'] = "application/json";
-  var response = await post(URL_LOGIN,
-      body: json.encode(user1.toJson()), headers: headers);
-  Map<String, dynamic> map = json.decode(response.body);
-  Result result = Result.fromJson(map);
-  if (result != null) {
-    TOKEN = result.token;
-    return true;
-  } else
+  try {
+    var response = await post(URL_LOGIN,
+        body: json.encode(user1.toJson()), headers: headers);
+    print(response.body);
+    Map<String, dynamic> map = json.decode(response.body);
+    Result result = Result.fromJson(map);
+    if (result != null) {
+      TOKEN = result.token;
+      print(TOKEN);
+      return true;
+    } else
+      return false;
+  } catch (Ex) {
     return false;
+  }
 }
 
 class Result {

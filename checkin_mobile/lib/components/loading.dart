@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LoadingBuilder extends StatelessWidget {
-  LoadingBuilder({this.text});
+  LoadingBuilder({this.text, this.color});
 
   final String text;
+  final Color color ;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class LoadingBuilder extends StatelessWidget {
           children: <Widget>[
             new CircularProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(
-                  Colors.redAccent.withOpacity(0.9)),
+                  color.withOpacity(0.9)),
               value: null,
               strokeWidth: 8.0,
             ),
@@ -27,7 +28,7 @@ class LoadingBuilder extends StatelessWidget {
               child: new Text(' '),
             ),
             new Text(
-              text ?? '',style: TextStyle(color: Colors.redAccent, fontSize: 15.0),
+              text ?? '',style: TextStyle(color: color, fontSize: 15.0),
             ),
           ],
         ),

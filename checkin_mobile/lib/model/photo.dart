@@ -17,11 +17,11 @@ class Photo {
 
 Future<String> upload(_image, compress, apiKey, apiSecret, BASE_URL) async {
   List<int> imageBytes = _image.readAsBytesSync();
-  if (compress) {
-    Img.Image image = Img.decodeImage(imageBytes);
-    Img.Image thumbnail = Img.copyResize(image, 480);
-    imageBytes = Img.encodeJpg(thumbnail);
-  }
+//  if (compress) {
+//    Img.Image image = Img.decodeImage(imageBytes);
+//    Img.Image thumbnail = Img.copyResize(image, 480);
+//    imageBytes = Img.encodeJpg(thumbnail);
+//  }
   String base64Image = base64.encode(imageBytes);
   int timestamp = new DateTime.now().millisecondsSinceEpoch;
   Map params = {
@@ -43,9 +43,12 @@ Future<String> upload(_image, compress, apiKey, apiSecret, BASE_URL) async {
   Map<String, String> headers = {};
   headers['Content-Type'] = "application/json";
   headers['Authorization'] = 'ddae9b93be2640b6acb788fe6384862c';
-  var response = await post(BASE_URL, headers: headers, body: requestBody);
-  Map<String, dynamic> map = json.decode(response.body);
-  Photo photo = Photo.fromJson(map);
-
-  return photo.url;
+  try {
+    var response = await post(BASE_URL, headers: headers, body: requestBody);
+    Map<String, dynamic> map = json.decode(response.body);
+    Photo photo = Photo.fromJson(map);
+    return photo.url;
+  } catch (Ex) {
+    return '';
+  }
 }
